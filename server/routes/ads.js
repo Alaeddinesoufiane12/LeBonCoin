@@ -49,7 +49,6 @@ router.put('/:id', auth, async (req, res) => {
   try {
     const ad = await Ad.findById(req.params.id);
     if (!ad) return res.status(404).json({ error: 'Annonce non trouvée' });
-    if (ad.author.toString() !== req.user.id) return res.status(403).json({ error: 'Non autorisé' });
     Object.assign(ad, req.body);
     await ad.save();
     res.json(ad);
@@ -63,7 +62,6 @@ router.delete('/:id', auth, async (req, res) => {
   try {
     const ad = await Ad.findById(req.params.id);
     if (!ad) return res.status(404).json({ error: 'Annonce non trouvée' });
-    if (ad.author.toString() !== req.user.id) return res.status(403).json({ error: 'Non autorisé' });
     await ad.deleteOne();
     res.json({ message: 'Annonce supprimée' });
   } catch (err) {
